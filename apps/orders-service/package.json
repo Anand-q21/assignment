@@ -82,5 +82,9 @@
       }
     }
   },
+  "scripts": {
+    "build": "webpack-cli build",
+    "start": "nx serve orders-service"
+  },
   "dependencies": {}
 }

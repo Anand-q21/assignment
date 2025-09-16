@@ -82,5 +82,8 @@
       }
     }
   },
+  "scripts": {
+    "build": "webpack-cli build"
+  },
   "dependencies": {}
 }

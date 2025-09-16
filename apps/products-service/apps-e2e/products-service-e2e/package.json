@@ -1,0 +1,26 @@
+{
+  "name": "@my-org/products-service-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "implicitDependencies": [
+      "@my-org/products-service"
+    ],
+    "targets": {
+      "e2e": {
+        "executor": "@nx/jest:jest",
+        "outputs": [
+          "{projectRoot}/test-output/jest/coverage"
+        ],
+        "options": {
+          "jestConfig": "apps-e2e/products-service-e2e/jest.config.ts",
+          "passWithNoTests": true
+        },
+        "dependsOn": [
+          "@my-org/products-service:build",
+          "@my-org/products-service:serve"
+        ]
+      }
+    }
+  }
+}

@@ -4,28 +4,31 @@
   "files": [],
   "references": [
     {
-      "path": "./api-gateway-e2e"
-    },
-    {
-      "path": "./api-gateway"
-    },
-    {
-      "path": "./products-service-e2e"
-    },
-    {
-      "path": "./products-service"
-    },
-    {
-      "path": "./orders-service-e2e"
-    },
-    {
-      "path": "./orders-service"
-    },
-    {
       "path": "./frontend-e2e"
     },
     {
-      "path": "./frontend"
+      "path": "./apps-e2e/products-service-e2e"
+    },
+    {
+      "path": "./apps-e2e/orders-service-e2e"
+    },
+    {
+      "path": "./apps-e2e/api-gateway-e2e"
+    },
+    {
+      "path": "./apps/products-service"
+    },
+    {
+      "path": "./apps/orders-service"
+    },
+    {
+      "path": "./apps/api-gateway"
+    },
+    {
+      "path": "./apps/frontend"
+    },
+    {
+      "path": "./libs/shared-dtos"
     }
   ]
 }
