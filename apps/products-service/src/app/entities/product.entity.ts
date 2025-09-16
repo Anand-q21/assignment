@@ -1,22 +1,28 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity()
+@Entity('products')
 export class Product {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column({ unique: true })
-  code!: string;
+  productCode!: string;
 
   @Column()
-  name!: string;
+  productName!: string;
 
-  @Column()
-  description!: string;
+  @Column('text')
+  productDescription!: string;
 
-  @Column('decimal')
-  rate!: number;
+  @Column('decimal', { precision: 10, scale: 2 })
+  productRate!: number;
 
-  @Column()
-  image!: string;
+  @Column({ nullable: true })
+  productImage?: string;
+
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
 }

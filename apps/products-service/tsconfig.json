@@ -1,43 +1,14 @@
 {
-<<<<<<< HEAD
   "extends": "../../tsconfig.base.json",
-  "files": [],
-  "include": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-=======
-  "extends": "./tsconfig.base.json",
-  "compileOnSave": false,
-  "files": [],
-  "references": [
-    {
-      "path": "./api-gateway-e2e"
-    },
-    {
-      "path": "./api-gateway"
-    },
-    {
-      "path": "./products-service-e2e"
-    },
-    {
-      "path": "./products-service"
-    },
-    {
-      "path": "./orders-service-e2e"
-    },
-    {
-      "path": "./orders-service"
-    },
-    {
-      "path": "./frontend-e2e"
-    },
-    {
-      "path": "./frontend"
->>>>>>> 74e1d5b25dcb9e92af18b5ec7add68db9d80f020
-    }
-  ]
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "types": ["node", "jest"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
 }
