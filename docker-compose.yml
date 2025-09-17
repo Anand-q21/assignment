@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: microservices-db
+    environment:
+      POSTGRES_DB: microservices
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: anand@21
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  api-gateway:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    command: npx nx serve api-gateway --host 0.0.0.0
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASS=anand@21
+      - JWT_SECRET=superSecretKey
+      - JWT_EXPIRES_IN=1h
+    depends_on:
+      - postgres
+      - products-service
+      - orders-service
+    networks:
+      - microservices-network
+
+  products-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: products-service
+    command: npx nx serve products-service --host 0.0.0.0
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASS=anand@21
+      - PRODUCTS_DB_NAME=products-service
+    depends_on:
+      - postgres
+    networks:
+      - microservices-network
+
+  orders-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: orders-service
+    command: npx nx serve orders-service --host 0.0.0.0
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASS=anand@21
+      - ORDERS_DB_NAME=orders-service
+    depends_on:
+      - postgres
+    networks:
+      - microservices-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: frontend
+    command: npx nx serve frontend --host 0.0.0.0
+    ports:
+      - "4200:4200"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3000
+    depends_on:
+      - api-gateway
+    networks:
+      - microservices-network
+
+volumes:
+  postgres_data:
+
+networks:
+  microservices-network:
+    driver: bridge
