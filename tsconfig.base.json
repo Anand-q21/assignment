@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@shared/dtos": ["libs/shared-dtos/src/index.ts"]
+    },
     "composite": true,
     "declarationMap": true,
     "experimentalDecorators": true,

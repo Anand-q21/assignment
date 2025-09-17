@@ -1,55 +1,34 @@
-import { Controller, Get, Post, Param, Body, Put, Delete, Inject } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, UseGuards, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
-import { CreateProductDto, UpdateProductDto } from '@my-org/shared-dtos';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { CreateProductDto } from '@shared/dtos';
 
-
+@ApiTags('products')
 @Controller('products')
 export class ProductsGatewayController {
   constructor(
     @Inject('PRODUCTS_SERVICE') private readonly productsClient: ClientProxy,
   ) {}
 
-  // 🔹 CREATE
+  @ApiBearerAuth('access-token')
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Body() product:  CreateProductDto) {
-    return firstValueFrom(
-      this.productsClient.send({ cmd: 'create_product' }, product),
-    );
+  create(@Body() dto: CreateProductDto) {
+    return this.productsClient.send({ cmd: 'create_product' }, dto);
   }
 
-  // 🔹 FIND ALL
+  @ApiBearerAuth('access-token')
+  @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll() {
-    return firstValueFrom(
-      this.productsClient.send({ cmd: 'get_products' }, {}),
-    );
+  getProducts() {
+    return this.productsClient.send({ cmd: 'get_products' }, {});
   }
 
-  // 🔹 FIND ONE
+  @ApiBearerAuth('access-token')
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return firstValueFrom(
-      this.productsClient.send({ cmd: 'get_product' }, parseInt(id)),
-    );
-  }
-
-  // 🔹 UPDATE
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() dto:UpdateProductDto) {
-    return firstValueFrom(
-      this.productsClient.send(
-        { cmd: 'update_product' },
-        { id: parseInt(id), dto },
-      ),
-    );
-  }
-
-  // 🔹 DELETE
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return firstValueFrom(
-      this.productsClient.send({ cmd: 'delete_product' }, parseInt(id)),
-    );
+  getOne(@Param('id') id: number) {
+    return this.productsClient.send({ cmd: 'get_product' }, +id);
   }
 }

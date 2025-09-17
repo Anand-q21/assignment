@@ -1,26 +1,26 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { ProductsController } from './products.controller';
+import { ProductsService } from './products.service';
 import { Product } from './entities/product.entity';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST as string,
-      port: parseInt(process.env.DB_PORT as string, 10),
-      username: process.env.DB_USER as string,
-      password: process.env.DB_PASS as string,
-      database: process.env.PRODUCTS_DB_NAME as string,
-      entities: [Product],
-      synchronize: true, 
+       type: 'postgres',
+  host: process.env.DB_HOST!,
+  port: parseInt(process.env.DB_PORT!, 10),
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.PRODUCTS_DB_NAME,
+  entities: [Product],
+  synchronize: true, 
     }),
+    TypeOrmModule.forFeature([Product]),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [ProductsController],
+  providers: [ProductsService],
 })
 export class AppModule {}

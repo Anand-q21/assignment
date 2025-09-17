@@ -8,6 +8,17 @@ module.exports = {
       devtoolModuleFilenameTemplate: '[absolute-resource-path]',
     }),
   },
+  resolve: {
+    alias: {
+      // 👇 Add aliases so Webpack knows where to find these libs
+      '@shared/dtos': join(__dirname, '../../libs/shared-dtos/src/index.ts'),
+      '@anand-q21-assignment/shared-dtos': join(
+        __dirname,
+        '../../libs/shared-dtos/src/index.ts'
+      ),
+    },
+    extensions: ['.ts', '.js', '.json'], // allow TS/JS resolution
+  },
   plugins: [
     new NxAppWebpackPlugin({
       target: 'node',

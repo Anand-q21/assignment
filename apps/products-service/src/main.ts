@@ -1,49 +1,33 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
+import { Transport, MicroserviceOptions } from '@nestjs/microservices';
+import { ValidationPipe } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
-  // Create HTTP application
   const app = await NestFactory.create(AppModule);
-  
-  // Global validation pipe
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    forbidNonWhitelisted: true,
-    transform: true,
-  }));
 
-  // Enable CORS
-  app.enableCors();
+  // Global validation
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-  // Swagger configuration
-  const config = new DocumentBuilder()
-    .setTitle('Products Service API')
-    .setDescription('Products microservice API documentation')
-    .setVersion('1.0')
-    .addTag('products')
-    .build();
-  
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
 
-  // Connect microservice
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.TCP,
-    options: {
-      host: 'localhost',
-      port: 3001,
-    },
+    options: { host: 'localhost', port: 3001 },
   });
 
   await app.startAllMicroservices();
-  await app.listen(3000);
-  
-  console.log('Products Service running on http://localhost:3000');
-  console.log('Products Service API docs available at http://localhost:3000/api/docs');
-  console.log('Products Microservice running on TCP port 3001');
-}
+  const config = new DocumentBuilder()
+    .setTitle('Products Service')
+    .setDescription('Products microservice API')
+    .setVersion('1.0')
+    .build();
 
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs', app, document);
+
+  await app.listen(3001);
+  console.log('✅ Products Service running on http://localhost:3001');
+  console.log('📚 Swagger available at http://localhost:3001/docs');
+}
 bootstrap();
