@@ -423,7 +423,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Backend**: ✅ NestJS Microservices with JWT Authentication (Working)
 - **Frontend**: ⚠️ NextJS structure (UI not implemented)
-- **Database**: ⚠️ In-memory storage (PostgreSQL integration pending)
 - **DevOps**: ⚠️ Docker files provided (not fully tested)
 - **Documentation**: ✅ Swagger/OpenAPI (Working)
 
